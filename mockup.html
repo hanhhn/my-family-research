@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My-Family App — UI Mockup</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, 'Segoe UI', sans-serif; background:#f0f2f5; color:#1a1a2e; }
+.header { background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; padding:20px; text-align:center; }
+.header h1 { font-size:24px; margin-bottom:4px; }
+.header p { opacity:0.85; font-size:14px; }
+.screen-tabs { display:flex; background:#fff; border-bottom:2px solid #eee; overflow-x:auto; }
+.screen-tabs button { flex:1; padding:12px 8px; border:none; background:none; cursor:pointer; font-size:13px; font-weight:600; color:#666; border-bottom:3px solid transparent; white-space:nowrap; }
+.screen-tabs button.active { color:#667eea; border-bottom-color:#667eea; }
+.screen { display:none; padding:16px; max-width:420px; margin:0 auto; }
+.screen.active { display:block; }
+
+/* Phone frame */
+.phone { background:#fff; border-radius:24px; box-shadow:0 8px 32px rgba(0,0,0,0.12); overflow:hidden; margin:16px auto; max-width:380px; }
+.phone-header { padding:12px 16px; font-weight:700; font-size:16px; }
+.phone-body { padding:0 16px 80px; min-height:500px; }
+
+/* Calendar styles */
+.cal-nav { display:flex; justify-content:space-between; align-items:center; padding:8px 0; margin-bottom:8px; }
+.cal-nav span { font-weight:700; font-size:15px; }
+.cal-nav button { background:#667eea; color:#fff; border:none; border-radius:8px; padding:6px 12px; cursor:pointer; font-size:12px; }
+.cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; text-align:center; font-size:11px; }
+.cal-grid .day-header { font-weight:700; color:#999; padding:4px 0; font-size:10px; }
+.cal-grid .day { padding:6px 2px; border-radius:8px; cursor:pointer; position:relative; line-height:1.2; }
+.cal-grid .day .solar { font-weight:600; font-size:13px; }
+.cal-grid .day .lunar { font-size:8px; color:#888; }
+.cal-grid .day.today { background:#667eea; color:#fff; }
+.cal-grid .day.today .lunar { color:#ddd; }
+.cal-grid .day.has-event::after { content:''; width:4px; height:4px; background:#ff6b6b; border-radius:50%; position:absolute; bottom:2px; left:50%; transform:translateX(-50%); }
+.cal-grid .day.today.has-event::after { background:#fff; }
+.cal-grid .day.other-month { opacity:0.3; }
+
+/* Event list */
+.event-list { margin-top:12px; }
+.event-item { display:flex; align-items:center; gap:10px; padding:10px; background:#f8f9fa; border-radius:10px; margin-bottom:6px; }
+.event-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.event-item .info { flex:1; }
+.event-item .info .title { font-weight:600; font-size:13px; }
+.event-item .info .sub { font-size:11px; color:#888; }
+
+/* Finance dashboard */
+.balance-card { background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; border-radius:16px; padding:20px; margin-bottom:16px; }
+.balance-card .label { font-size:12px; opacity:0.8; }
+.balance-card .amount { font-size:28px; font-weight:800; margin:4px 0; }
+.balance-card .row { display:flex; justify-content:space-between; margin-top:12px; }
+.balance-card .row div { text-align:center; }
+.balance-card .row div .val { font-weight:700; font-size:15px; }
+.balance-card .row div .lbl { font-size:10px; opacity:0.7; }
+
+.finance-section { margin-bottom:16px; }
+.finance-section h3 { font-size:14px; margin-bottom:8px; }
+.tx-item { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #f0f0f0; }
+.tx-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.tx-item .info { flex:1; }
+.tx-item .info .title { font-weight:600; font-size:13px; }
+.tx-item .info .cat { font-size:11px; color:#888; }
+.tx-item .amount { font-weight:700; font-size:14px; }
+.tx-item .amount.expense { color:#ff6b6b; }
+.tx-item .amount.income { color:#51cf66; }
+
+/* Chart placeholder */
+.chart-placeholder { background:#f8f9fa; border-radius:12px; height:160px; display:flex; align-items:center; justify-content:center; color:#aaa; font-size:13px; position:relative; overflow:hidden; }
+.pie-chart { width:120px; height:120px; border-radius:50%; background:conic-gradient(#667eea 0% 35%, #ff6b6b 35% 55%, #51cf66 55% 70%, #ffd43b 70% 85%, #845ef7 85% 100%); }
+.chart-legend { position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:10px; }
+.chart-legend div { display:flex; align-items:center; gap:4px; margin-bottom:4px; }
+.chart-legend span { width:8px; height:8px; border-radius:2px; display:inline-block; }
+
+/* Family */
+.family-header-card { background:linear-gradient(135deg,#f093fb,#f5576c); color:#fff; border-radius:16px; padding:20px; margin-bottom:16px; text-align:center; }
+.family-header-card h2 { font-size:18px; margin-bottom:4px; }
+.family-header-card p { font-size:12px; opacity:0.85; }
+.members { display:flex; gap:12px; margin:16px 0; overflow-x:auto; padding-bottom:4px; }
+.member { text-align:center; flex-shrink:0; }
+.member .avatar { width:48px; height:48px; border-radius:50%; background:#ddd; margin:0 auto 4px; display:flex; align-items:center; justify-content:center; font-size:20px; }
+.member .name { font-size:11px; font-weight:600; }
+.member .role { font-size:9px; color:#999; }
+.family-action { display:flex; align-items:center; gap:12px; padding:14px; background:#f8f9fa; border-radius:12px; margin-bottom:8px; cursor:pointer; }
+.family-action .icon { font-size:22px; }
+.family-action .text { flex:1; }
+.family-action .text .title { font-weight:600; font-size:13px; }
+.family-action .text .sub { font-size:11px; color:#888; }
+.family-action .arrow { color:#ccc; }
+
+/* Bottom nav */
+.bottom-nav { position:sticky; bottom:0; background:#fff; border-top:1px solid #eee; display:flex; padding:8px 0 12px; }
+.bottom-nav .nav-item { flex:1; text-align:center; cursor:pointer; }
+.bottom-nav .nav-item .icon { font-size:20px; }
+.bottom-nav .nav-item .label { font-size:10px; color:#888; }
+.bottom-nav .nav-item.active .label { color:#667eea; font-weight:600; }
+
+/* Day detail */
+.day-detail { background:#fff; border-radius:12px; padding:16px; margin-top:12px; }
+.day-detail h3 { font-size:14px; margin-bottom:4px; }
+.day-detail .lunar-info { font-size:12px; color:#888; margin-bottom:12px; }
+.good-bad { display:flex; gap:8px; margin-bottom:12px; }
+.good-bad .tag { padding:4px 10px; border-radius:20px; font-size:11px; font-weight:600; }
+.tag.good { background:#d3f9d8; color:#2b8a3e; }
+.tag.bad { background:#ffe3e3; color:#c92a2a; }
+
+.add-btn { position:fixed; bottom:80px; right:20px; width:48px; height:48px; background:#667eea; color:#fff; border:none; border-radius:50%; font-size:24px; cursor:pointer; box-shadow:0 4px 12px rgba(102,126,234,0.4); }
+
+h2.section-title { font-size:16px; margin:16px 0 8px; }
+
+/* Budget bar */
+.budget-item { margin-bottom:12px; }
+.budget-item .top { display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; }
+.budget-item .top .cat { font-weight:600; }
+.budget-item .top .amt { color:#888; }
+.budget-bar { height:6px; background:#eee; border-radius:3px; overflow:hidden; }
+.budget-bar .fill { height:100%; border-radius:3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🏠 My-Family App</h1>
+  <p>UI Mockup — Gia đình Việt, một chỗ</p>
+</div>
+
+<div class="screen-tabs">
+  <button class="active" onclick="showScreen('calendar')">📅 Lịch Âm</button>
+  <button onclick="showScreen('day-detail')">📆 Chi Tiết Ngày</button>
+  <button onclick="showScreen('finance')">💰 Tài Chính</button>
+  <button onclick="showScreen('add-tx')">➕ Thêm GD</button>
+  <button onclick="showScreen('family')">👨‍👩‍👧‍👦 Gia Đình</button>
+</div>
+
+<!-- CALENDAR SCREEN -->
+<div id="calendar" class="screen active">
+  <div class="phone">
+    <div class="phone-header">📅 Tháng 3 Âm lịch</div>
+    <div class="phone-body">
+      <div class="cal-nav">
+        <button>◀ Tháng trước</button>
+        <span>Tháng 3 âm / T4.2026</span>
+        <button>Tháng sau ▶</button>
+      </div>
+      <div class="cal-grid">
+        <div class="day-header">CN</div><div class="day-header">T2</div><div class="day-header">T3</div><div class="day-header">T4</div><div class="day-header">T5</div><div class="day-header">T6</div><div class="day-header">T7</div>
+
+        <div class="day other-month"><div class="solar">30</div><div class="lunar">2/3</div></div>
+        <div class="day other-month"><div class="solar">31</div><div class="lunar">3/3</div></div>
+        <div class="day"><div class="solar">1</div><div class="lunar">4/3</div></div>
+        <div class="day"><div class="solar">2</div><div class="lunar">5/3</div></div>
+        <div class="day has-event"><div class="solar">3</div><div class="lunar">6/3</div></div>
+        <div class="day"><div class="solar">4</div><div class="lunar">7/3</div></div>
+        <div class="day"><div class="solar">5</div><div class="lunar">8/3</div></div>
+
+        <div class="day"><div class="solar">6</div><div class="lunar">9/3</div></div>
+        <div class="day has-event"><div class="solar">7</div><div class="lunar">10/3</div></div>
+        <div class="day"><div class="solar">8</div><div class="lunar">11/3</div></div>
+        <div class="day"><div class="solar">9</div><div class="lunar">12/3</div></div>
+        <div class="day"><div class="solar">10</div><div class="lunar">13/3</div></div>
+        <div class="day"><div class="solar">11</div><div class="lunar">14/3</div></div>
+        <div class="day has-event"><div class="solar">12</div><div class="lunar">15/3</div></div>
+
+        <div class="day today"><div class="solar">13</div><div class="lunar">16/3</div></div>
+        <div class="day"><div class="solar">14</div><div class="lunar">17/3</div></div>
+        <div class="day"><div class="solar">15</div><div class="lunar">18/3</div></div>
+        <div class="day"><div class="solar">16</div><div class="lunar">19/3</div></div>
+        <div class="day has-event"><div class="solar">17</div><div class="lunar">20/3</div></div>
+        <div class="day"><div class="solar">18</div><div class="lunar">21/3</div></div>
+        <div class="day"><div class="solar">19</div><div class="lunar">22/3</div></div>
+
+        <div class="day"><div class="solar">20</div><div class="lunar">23/3</div></div>
+        <div class="day"><div class="solar">21</div><div class="lunar">24/3</div></div>
+        <div class="day"><div class="solar">22</div><div class="lunar">25/3</div></div>
+        <div class="day"><div class="solar">23</div><div class="lunar">26/3</div></div>
+        <div class="day"><div class="solar">24</div><div class="lunar">27/3</div></div>
+        <div class="day"><div class="solar">25</div><div class="lunar">28/3</div></div>
+        <div class="day"><div class="solar">26</div><div class="lunar">29/3</div></div>
+
+        <div class="day"><div class="solar">27</div><div class="lunar">30/3</div></div>
+        <div class="day other-month"><div class="solar">28</div><div class="lunar">1/4</div></div>
+        <div class="day other-month"><div class="solar">29</div><div class="lunar">2/4</div></div>
+        <div class="day other-month"><div class="solar">30</div><div class="lunar">3/4</div></div>
+        <div class="day other-month"></div>
+        <div class="day other-month"></div>
+        <div class="day other-month"></div>
+      </div>
+
+      <h2 class="section-title">🔔 Sắp tới</h2>
+      <div class="event-list">
+        <div class="event-item">
+          <div class="event-dot" style="background:#ff6b6b"></div>
+          <div class="info"><div class="title">Giỗ ông nội</div><div class="sub">17/4 (20/3 âm) • Còn 4 ngày</div></div>
+        </div>
+        <div class="event-item">
+          <div class="event-dot" style="background:#51cf66"></div>
+          <div class="info"><div class="title">Sinh nhật Mẹ (âm)</div><div class="sub">7/4 (10/3 âm) • Còn 1 ngày</div></div>
+        </div>
+        <div class="event-item">
+          <div class="event-dot" style="background:#667eea"></div>
+          <div class="info"><div class="title">Rằm tháng 3</div><div class="sub">12/4 (15/3 âm) • Hôm nay!</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item active"><div class="icon">📅</div><div class="label">Lịch</div></div>
+      <div class="nav-item"><div class="icon">💰</div><div class="label">Tài chính</div></div>
+      <div class="nav-item"><div class="icon">👨‍👩‍👧‍👦</div><div class="label">Gia đình</div></div>
+      <div class="nav-item"><div class="icon">⚙️</div><div class="label">Cài đặt</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DAY DETAIL SCREEN -->
+<div id="day-detail" class="screen">
+  <div class="phone">
+    <div class="phone-header">📆 13/4/2026 (Thứ Hai)</div>
+    <div class="phone-body">
+      <div class="day-detail">
+        <h3>Ngày 16 tháng 3 năm Bính Ngọ</h3>
+        <div class="lunar-info">Ngày: Canh Thìn • Tháng: Nhâm Thìn • Năm: Bính Ngọ</div>
+
+        <div class="good-bad">
+          <span class="tag good">✅ Hoàng đạo</span>
+          <span class="tag good">🕐 Giờ Tý, Mão, Tỵ</span>
+        </div>
+
+        <h3 style="margin-top:16px">✅ Việc tốt</h3>
+        <div style="font-size:12px; color:#555; line-height:1.8">
+          • Ký hợp đồng<br>
+          • Mua bán nhà đất<br>
+          • Khai trương<br>
+          • Xuất hành xa
+        </div>
+
+        <h3 style="margin-top:16px">❌ Kiêng kỵ</h3>
+        <div style="font-size:12px; color:#555; line-height:1.8">
+          • Động đất, xây dựng<br>
+          • Chuyển nhà
+        </div>
+      </div>
+
+      <h2 class="section-title">📌 Sự kiện trong ngày</h2>
+      <div class="event-list">
+        <div class="event-item">
+          <div class="event-dot" style="background:#ffd43b"></div>
+          <div class="info"><div class="title">🏆 Con thi chạy</div><div class="sub">7:00 • Trường THCS Lý Tự Trọng</div></div>
+        </div>
+        <div class="event-item">
+          <div class="event-dot" style="background:#667eea"></div>
+          <div class="info"><div class="title">🛒 Đi chợ cuối tuần</div><div class="sub">16:00 • Chợ Bến Thành</div></div>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:16px">
+        <button style="background:#667eea; color:#fff; border:none; padding:10px 24px; border-radius:10px; font-weight:600; cursor:pointer">+ Thêm sự kiện</button>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item active"><div class="icon">📅</div><div class="label">Lịch</div></div>
+      <div class="nav-item"><div class="icon">💰</div><div class="label">Tài chính</div></div>
+      <div class="nav-item"><div class="icon">👨‍👩‍👧‍👦</div><div class="label">Gia đình</div></div>
+      <div class="nav-item"><div class="icon">⚙️</div><div class="label">Cài đặt</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FINANCE SCREEN -->
+<div id="finance" class="screen">
+  <div class="phone">
+    <div class="phone-header">💰 Tài chính gia đình</div>
+    <div class="phone-body">
+      <div class="balance-card">
+        <div class="label">Số dư tháng này</div>
+        <div class="amount">12.450.000 ₫</div>
+        <div class="row">
+          <div><div class="val" style="color:#51cf66">+25.000.000</div><div class="lbl">Thu nhập</div></div>
+          <div><div class="val" style="color:#ff6b6b">-12.550.000</div><div class="lbl">Chi tiêu</div></div>
+        </div>
+      </div>
+
+      <div class="finance-section">
+        <h3>Chi tiêu theo danh mục</h3>
+        <div class="chart-placeholder" style="justify-content:space-around; padding:16px">
+          <div class="pie-chart"></div>
+          <div class="chart-legend">
+            <div><span style="background:#667eea"></span> Ăn uống 35%</div>
+            <div><span style="background:#ff6b6b"></span> Con cái 20%</div>
+            <div><span style="background:#51cf66"></span> Nhà cửa 15%</div>
+            <div><span style="background:#ffd43b"></span> Xe cộ 15%</div>
+            <div><span style="background:#845ef7"></span> Khác 15%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="finance-section">
+        <h3>Budget tháng 4</h3>
+        <div class="budget-item">
+          <div class="top"><span class="cat">🍜 Ăn uống</span><span class="amt">3.5tr / 5tr</span></div>
+          <div class="budget-bar"><div class="fill" style="width:70%; background:#667eea"></div></div>
+        </div>
+        <div class="budget-item">
+          <div class="top"><span class="cat">👶 Con cái</span><span class="amt">2tr / 3tr</span></div>
+          <div class="budget-bar"><div class="fill" style="width:67%; background:#ff6b6b"></div></div>
+        </div>
+        <div class="budget-item">
+          <div class="top"><span class="cat">🏠 Nhà cửa</span><span class="amt">1.5tr / 2tr</span></div>
+          <div class="budget-bar"><div class="fill" style="width:75%; background:#51cf66"></div></div>
+        </div>
+        <div class="budget-item">
+          <div class="top"><span class="cat">🚗 Xe cộ</span><span class="amt">0.8tr / 2tr</span></div>
+          <div class="budget-bar"><div class="fill" style="width:40%; background:#ffd43b"></div></div>
+        </div>
+      </div>
+
+      <div class="finance-section">
+        <h3>Giao dịch gần đây</h3>
+        <div class="tx-item">
+          <div class="tx-icon" style="background:#ffe3e3">🍜</div>
+          <div class="info"><div class="title">Ăn trưa gia đình</div><div class="cat">Ăn uống • Mẹ chi</div></div>
+          <div class="amount expense">-350.000</div>
+        </div>
+        <div class="tx-item">
+          <div class="tx-icon" style="background:#d3f9d8">💰</div>
+          <div class="info"><div class="title">Lương tháng 4</div><div class="cat">Thu nhập • Bố</div></div>
+          <div class="amount income">+15.000.000</div>
+        </div>
+        <div class="tx-item">
+          <div class="tx-icon" style="background:#e8daef">🎓</div>
+          <div class="info"><div class="title">Học phí tiếng Anh</div><div class="cat">Con cái • Bố chi</div></div>
+          <div class="amount expense">-1.200.000</div>
+        </div>
+        <div class="tx-item">
+          <div class="tx-icon" style="background:#fff3cd">⛽</div>
+          <div class="info"><div class="title">Đổ xăng</div><div class="cat">Xe cộ • Mẹ chi</div></div>
+          <div class="amount expense">-200.000</div>
+        </div>
+        <div class="tx-item">
+          <div class="tx-icon" style="background:#d3f9d8">💰</div>
+          <div class="info"><div class="title">Lương tháng 4</div><div class="cat">Thu nhập • Mẹ</div></div>
+          <div class="amount income">+10.000.000</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item"><div class="icon">📅</div><div class="label">Lịch</div></div>
+      <div class="nav-item active"><div class="icon">💰</div><div class="label">Tài chính</div></div>
+      <div class="nav-item"><div class="icon">👨‍👩‍👧‍👦</div><div class="label">Gia đình</div></div>
+      <div class="nav-item"><div class="icon">⚙️</div><div class="label">Cài đặt</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD TRANSACTION SCREEN -->
+<div id="add-tx" class="screen">
+  <div class="phone">
+    <div class="phone-header">➕ Thêm giao dịch</div>
+    <div class="phone-body">
+      <div style="display:flex; gap:8px; margin-bottom:16px">
+        <button style="flex:1; padding:10px; border:2px solid #ff6b6b; background:#fff0f0; border-radius:10px; font-weight:700; color:#ff6b6b; cursor:pointer">Chi tiêu</button>
+        <button style="flex:1; padding:10px; border:2px solid #eee; background:#f8f8f8; border-radius:10px; font-weight:600; color:#888; cursor:pointer">Thu nhập</button>
+      </div>
+
+      <div style="text-align:center; margin:20px 0">
+        <input type="text" value="350.000" style="font-size:32px; font-weight:800; text-align:center; border:none; outline:none; width:100%; color:#ff6b6b" />
+        <div style="font-size:14px; color:#888">VNĐ</div>
+      </div>
+
+      <div style="margin-bottom:16px">
+        <label style="font-size:12px; color:#888; display:block; margin-bottom:6px">Danh mục</label>
+        <div style="display:flex; flex-wrap:wrap; gap:8px">
+          <span style="padding:8px 14px; background:#667eea; color:#fff; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer">🍜 Ăn uống</span>
+          <span style="padding:8px 14px; background:#f0f0f0; border-radius:20px; font-size:12px; cursor:pointer">🏠 Nhà cửa</span>
+          <span style="padding:8px 14px; background:#f0f0f0; border-radius:20px; font-size:12px; cursor:pointer">👶 Con cái</span>
+          <span style="padding:8px 14px; background:#f0f0f0; border-radius:20px; font-size:12px; cursor:pointer">🚗 Xe cộ</span>
+          <span style="padding:8px 14px; background:#f0f0f0; border-radius:20px; font-size:12px; cursor:pointer">💊 Y tế</span>
+          <span style="padding:8px 14px; background:#f0f0f0; border-radius:20px; font-size:12px; cursor:pointer">🎮 Giải trí</span>
+          <span style="padding:8px 14px; background:#f0f0f0; border-radius:20px; font-size:12px; cursor:pointer">👕 Quần áo</span>
+          <span style="padding:8px 14px; background:#f0f0f0; border-radius:20px; font-size:12px; cursor:pointer">📱 Bills</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom:12px">
+        <label style="font-size:12px; color:#888; display:block; margin-bottom:6px">Ghi chú</label>
+        <input type="text" placeholder="Ăn trưa gia đình..." style="width:100%; padding:10px; border:1px solid #eee; border-radius:10px; font-size:14px; outline:none" />
+      </div>
+
+      <div style="margin-bottom:12px">
+        <label style="font-size:12px; color:#888; display:block; margin-bottom:6px">Người chi</label>
+        <div style="display:flex; gap:8px">
+          <span style="padding:6px 12px; background:#667eea; color:#fff; border-radius:20px; font-size:12px; cursor:pointer">👩 Mẹ</span>
+          <span style="padding:6px 12px; background:#f0f0f0; border-radius:20px; font-size:12px; cursor:pointer">👨 Bố</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom:16px">
+        <label style="font-size:12px; color:#888; display:block; margin-bottom:6px">Ví</label>
+        <div style="display:flex; gap:8px">
+          <span style="padding:6px 12px; background:#667eea; color:#fff; border-radius:20px; font-size:12px; cursor:pointer">💵 Tiền mặt</span>
+          <span style="padding:6px 12px; background:#f0f0f0; border-radius:20px; font-size:12px; cursor:pointer">💳 Thẻ</span>
+          <span style="padding:6px 12px; background:#f0f0f0; border-radius:20px; font-size:12px; cursor:pointer">📱 Momo</span>
+        </div>
+      </div>
+
+      <button style="width:100%; padding:14px; background:#667eea; color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer">Lưu giao dịch</button>
+    </div>
+  </div>
+</div>
+
+<!-- FAMILY SCREEN -->
+<div id="family" class="screen">
+  <div class="phone">
+    <div class="phone-header">👨‍👩‍👧‍👦 Gia đình Nguyễn</div>
+    <div class="phone-body">
+      <div class="family-header-card">
+        <h2>Gia đình Nguyễn</h2>
+        <p>4 thành viên • Tạo 12/3/2026</p>
+      </div>
+
+      <h3 style="font-size:14px; margin-bottom:8px">Thành viên</h3>
+      <div class="members">
+        <div class="member">
+          <div class="avatar" style="background:#667eea; color:#fff">👨</div>
+          <div class="name">Hạnh</div>
+          <div class="role">Admin</div>
+        </div>
+        <div class="member">
+          <div class="avatar" style="background:#f5576c; color:#fff">👩</div>
+          <div class="name">Vợ</div>
+          <div class="role">Member</div>
+        </div>
+        <div class="member">
+          <div class="avatar" style="background:#51cf66; color:#fff">👦</div>
+          <div class="name">Con trai</div>
+          <div class="role">Member</div>
+        </div>
+        <div class="member">
+          <div class="avatar" style="background:#ffd43b; color:#fff">👧</div>
+          <div class="name">Con gái</div>
+          <div class="role">Member</div>
+        </div>
+        <div class="member">
+          <div class="avatar" style="background:#eee; color:#aaa">+</div>
+          <div class="name" style="color:#888">Mời</div>
+          <div class="role"></div>
+        </div>
+      </div>
+
+      <div class="family-action">
+        <div class="icon">📋</div>
+        <div class="text"><div class="title">Shopping list</div><div class="sub">3 mục chưa mua</div></div>
+        <div class="arrow">›</div>
+      </div>
+      <div class="family-action">
+        <div class="icon">🎯</div>
+        <div class="text"><div class="title">Mục tiêu tiết kiệm</div><div class="sub">Du lịch Đà Nẵng: 8/15 triệu</div></div>
+        <div class="arrow">›</div>
+      </div>
+      <div class="family-action">
+        <div class="icon">📊</div>
+        <div class="text"><div class="title">Báo cáo tháng</div><div class="sub">Xu hướng chi tiêu 6 tháng</div></div>
+        <div class="arrow">›</div>
+      </div>
+      <div class="family-action">
+        <div class="icon">🔔</div>
+        <div class="text"><div class="title">Nhắc nhở</div><div class="sub">Điện nước đến hạn 15/4</div></div>
+        <div class="arrow">›</div>
+      </div>
+      <div class="family-action">
+        <div class="icon">📷</div>
+        <div class="text"><div class="title">Album gia đình</div><div class="sub">24 ảnh • Sắp có (Phase 3)</div></div>
+        <div class="arrow">›</div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item"><div class="icon">📅</div><div class="label">Lịch</div></div>
+      <div class="nav-item"><div class="icon">💰</div><div class="label">Tài chính</div></div>
+      <div class="nav-item active"><div class="icon">👨‍👩‍👧‍👦</div><div class="label">Gia đình</div></div>
+      <div class="nav-item"><div class="icon">⚙️</div><div class="label">Cài đặt</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen-tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
